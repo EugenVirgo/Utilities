@@ -3,11 +3,7 @@
 
 #include <cstddef>
 
-struct DownloadData {
-    const unsigned char* data;
-    size_t size;
-};
-
-extern const DownloadData download_data;
+extern const unsigned char download_data[61728];
+extern const size_t download_data_size;
 
 #endif // DOWNLOAD_DATA_TEST_HPP

@@ -1,10 +1,9 @@
 import os
 
 # File paths
-binary_file_path = 'Bins//LL01-BBE-01_flash_Blue.bin'
-# binary_file_path = 'Bins//LL01-BBE-01_flash_Blank.bin'
-cpp_file_path = 'Bins//download_data_test.cpp'
-hpp_file_path = 'Bins//download_data_test.hpp'
+binary_file_path = 'Bins/LL01-BBE-01_flash_Blue.bin'
+cpp_file_path = 'Bins/download_data_test.cpp'
+hpp_file_path = 'Bins/download_data_test.hpp'
 
 # Read binary file data
 with open(binary_file_path, 'rb') as bin_file:
@@ -14,7 +13,7 @@ with open(binary_file_path, 'rb') as bin_file:
 header_content = f"""#ifndef DOWNLOAD_DATA_TEST_HPP
 #define DOWNLOAD_DATA_TEST_HPP
 
-#include <cstddef>
+#include <stddef.h>
 
 extern const unsigned char download_data[{len(binary_data)}];
 extern const size_t download_data_size;
