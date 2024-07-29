@@ -19,10 +19,10 @@ header_content = f"""#ifndef DOWNLOAD_DATA_TEST_HPP
 
 #include <cstddef>
 
-struct DownloadData {
+struct DownloadData {{
     const unsigned char* data;
     size_t size;
-};
+}};
 
 extern const DownloadData download_data;
 
