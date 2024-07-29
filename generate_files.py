@@ -1,13 +1,17 @@
 import os
 
 # File paths
-binary_file_path = 'yourfile.bin'
-cpp_file_path = 'download_data_test.cpp'
-hpp_file_path = 'download_data_test.hpp'
+binary_file_path = 'Bins//LL01-BBE-01_flash_Blue.bin'
+# binary_file_path = 'Bins//LL01-BBE-01_flash_Blank.bin'
+cpp_file_path = 'Bins//download_data_test.cpp'
+hpp_file_path = 'Bins//download_data_test.hpp'
 
 # Read binary file data
 with open(binary_file_path, 'rb') as bin_file:
     binary_data = bin_file.read()
+
+# Determine the size of the binary data
+data_size = len(binary_data)
 
 # Generate header file content
 header_content = f"""#ifndef DOWNLOAD_DATA_TEST_HPP
@@ -15,8 +19,12 @@ header_content = f"""#ifndef DOWNLOAD_DATA_TEST_HPP
 
 #include <cstddef>
 
-extern const unsigned char download_data[{len(binary_data)}];
-extern const size_t download_data_size;
+struct DownloadData {
+    const unsigned char* data;
+    size_t size;
+};
+
+extern const DownloadData download_data;
 
 #endif // DOWNLOAD_DATA_TEST_HPP
 """
@@ -24,11 +32,14 @@ extern const size_t download_data_size;
 # Generate source file content
 source_content = f"""#include "download_data_test.hpp"
 
-const unsigned char download_data[{len(binary_data)}] = {{
+const unsigned char flash_data[{data_size}] __attribute__((section(".flash_data"))) = {{
     {', '.join(f'0x{byte:02x}' for byte in binary_data)}
 }};
 
-const size_t download_data_size = {len(binary_data)};
+const DownloadData download_data = {{
+    flash_data,
+    {data_size}
+}};
 """
 
 # Write to header file
