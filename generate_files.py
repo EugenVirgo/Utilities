@@ -10,21 +10,14 @@ hpp_file_path = 'Bins//download_data_test.hpp'
 with open(binary_file_path, 'rb') as bin_file:
     binary_data = bin_file.read()
 
-# Determine the size of the binary data
-data_size = len(binary_data)
-
 # Generate header file content
 header_content = f"""#ifndef DOWNLOAD_DATA_TEST_HPP
 #define DOWNLOAD_DATA_TEST_HPP
 
 #include <cstddef>
 
-struct DownloadData {{
-    const unsigned char* data;
-    size_t size;
-}};
-
-extern const DownloadData download_data;
+extern const unsigned char download_data[{len(binary_data)}];
+extern const size_t download_data_size;
 
 #endif // DOWNLOAD_DATA_TEST_HPP
 """
@@ -32,14 +25,11 @@ extern const DownloadData download_data;
 # Generate source file content
 source_content = f"""#include "download_data_test.hpp"
 
-const unsigned char flash_data[{data_size}] __attribute__((section(".flash_data"))) = {{
+const unsigned char download_data[{len(binary_data)}] = {{
     {', '.join(f'0x{byte:02x}' for byte in binary_data)}
 }};
 
-const DownloadData download_data = {{
-    flash_data,
-    {data_size}
-}};
+const size_t download_data_size = {len(binary_data)};
 """
 
 # Write to header file
